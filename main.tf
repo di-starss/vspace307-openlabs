@@ -2,7 +2,6 @@
     OPENLABS v. 1.12
 
     ENV___
-    ------------------------------------------------------------------------------------
           export TF_VAR_qemu_ip={ip}
 
           export TF_VAR_nbx_server_url={url}
@@ -11,10 +10,8 @@
 
           export TF_VAR_dns_server_url={url}
           export TF_VAR_dns_api_key={api_token}
-    ------------------------------------------------------------------------------------
 
     RUN___
-    ------------------------------------------------------------------------------------
           ulimit -n 4096
           terraform apply -parallelism=60
 **/
