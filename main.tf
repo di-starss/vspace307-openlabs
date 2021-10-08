@@ -1133,4 +1133,5 @@ resource "null_resource" "controller" {
 //
 // OUTPUT
 //
-output "api_url" { value = "${var.openstack_endpoint_schema}://${module.core.vm_rg_controller_hostname}:${var.openstack_endpoint_keystone_port}/v3" }
+output "api" { value = "${var.openstack_endpoint_schema}://${module.core.vm_rg_controller_hostname}:${var.openstack_endpoint_keystone_port}/v3" }
+output "mgmt" { value = module.core.vm_rg_mgmt_fqdn }
