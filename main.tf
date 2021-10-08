@@ -1135,3 +1135,15 @@ resource "null_resource" "controller" {
 //
 output "api" { value = "${var.openstack_endpoint_schema}://${module.core.vm_rg_controller_hostname}:${var.openstack_endpoint_keystone_port}/v3" }
 output "mgmt" { value = module.core.vm_rg_mgmt_fqdn }
+
+output "vm_ams_compute_kvm0_hostname" { value = module.core.vm_ams_compute_kvm0_hostname }
+output "vm_ams_compute_kvm1_hostname" { value = module.core.vm_ams_compute_kvm1_hostname }
+output "vm_ams_compute_kvm2_hostname" { value = module.core.vm_ams_compute_kvm2_hostname }
+output "vm_ldn_compute_kvm3_hostname" { value = module.core.vm_ldn_compute_kvm3_hostname }
+output "vm_ldn_compute_kvm4_hostname" { value = module.core.vm_ldn_compute_kvm4_hostname }
+output "vm_ldn_compute_kvm5_hostname" { value = module.core.vm_ldn_compute_kvm5_hostname }
+
+output "storage_backend_name_ams_rack_5" { value = module.core.storage_backend_name_ams_rack_5 }
+output "storage_backend_name_ams_rack_6" { value = module.core.storage_backend_name_ams_rack_6 }
+output "storage_backend_name_ldn_rack_17" { value = module.core.storage_backend_name_ldn_rack_17 }
+output "storage_backend_name_ldn_rack_18" { value = module.core.storage_backend_name_ldn_rack_18 }
