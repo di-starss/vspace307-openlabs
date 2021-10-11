@@ -1,5 +1,6 @@
 /**
-    OPENLABS v. 1.12
+
+    $ OPENLABS, v.2.0 2021/10/11 12:36 Exp @di $
 
     ENV___
           export TF_VAR_qemu_ip={ip}
@@ -11,12 +12,51 @@
           export TF_VAR_dns_server_url={url}
           export TF_VAR_dns_api_key={api_token}
 
+    CFG___
+          variable "qemu_ip" {}
+
+          variable "nbx_server_url" {}
+          variable "nbx_api_token" {}
+          variable "nbx_allow_insecure_https" {}
+
+          variable "dns_server_url" {}
+          variable "dns_api_key" {}
+
+          variable "consul_host" { default = "consul.openlabs.vspace307.io" }
+          variable "consul_port" { default = 8500 }
+          variable "consul_schema" { default = "http" }
+
+          locals {
+            consul_url = "${var.consul_schema}://${var.consul_host}:${var.consul_port}"
+          }
+
+          provider "libvirt" {
+            uri = "qemu+tcp://root@${var.qemu_ip}/system"
+          }
+
+          provider "netbox" {
+            server_url           = var.nbx_server_url
+            api_token            = var.nbx_api_token
+            allow_insecure_https = var.nbx_allow_insecure_https
+          }
+
+          provider "powerdns" {
+            server_url  = var.dns_server_url
+            api_key     = var.dns_api_key
+          }
+
+          provider "consul" {
+            address    = local.consul_url
+            datacenter = var.consul_dc
+          }
+
     RUN___
           ulimit -n 4096
           terraform apply -parallelism=60
 **/
 
 terraform {
+  required_version = ">= 0.14.0"
   required_providers {
     libvirt = {
       source = "dmacvicar/libvirt"
@@ -35,39 +75,6 @@ terraform {
       version = "2.13.0"
     }
   }
-}
-
-variable "qemu_ip" {}
-
-variable "nbx_server_url" {}
-variable "nbx_api_token" {}
-variable "nbx_allow_insecure_https" {}
-
-variable "dns_server_url" {}
-variable "dns_api_key" {}
-
-provider "libvirt" {
-  uri = "qemu+tcp://root@${var.qemu_ip}/system"
-}
-
-provider "netbox" {
-  server_url           = var.nbx_server_url
-  api_token            = var.nbx_api_token
-  allow_insecure_https = var.nbx_allow_insecure_https
-}
-
-provider "powerdns" {
-  server_url  = var.dns_server_url
-  api_key     = var.dns_api_key
-}
-
-provider "consul" {
-  address    = local.openlabs_consul_url
-  datacenter = var.openlabs_consul_dc
-}
-
-locals {
-  openlabs_consul_url = "${var.openlabs_consul_schema}://${var.openlabs_consul_host}:${var.openlabs_consul_port}"
 }
 
 //
@@ -94,7 +101,7 @@ locals {
 
 //
 // OPENSTACK
-// ---------------------------------------------------------------------------------------------------------------------
+//
 /*
   variable "openstack_release" { default = "victoria" }
   variable "openstack_keystone_bootstrap_password" { default = "{password}" }
@@ -205,7 +212,7 @@ variable "openstack_rsyslog_logdna_key" {}
 
 //
 // VM
-// ---------------------------------------------------------------------------------------------------------------------
+//
 variable "openlabs_consul_host" {}
 variable "openlabs_consul_port" {}
 variable "openlabs_consul_schema" {}
